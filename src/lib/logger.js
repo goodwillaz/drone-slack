@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-const { createLogger, format, transports } = require('winston')
+import { createLogger, format, transports } from 'winston'
 const { combine, timestamp, printf } = format
 
 const jsonFormat = printf(({ message, timestamp }) => {
@@ -37,4 +37,4 @@ const logger = createLogger({
   exitOnError: true
 })
 
-exports.logger = logger
+export default logger

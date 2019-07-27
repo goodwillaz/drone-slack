@@ -1,5 +1,15 @@
 import convict from 'convict'
 
+convict.addFormat('username', () => {}, (value, config) => {
+  const map = config.get('usernameMap').find(element => element.indexOf(`${value}:`) === 0)
+
+  if (map) {
+    value = map.substring(`${value}:`.length)
+  }
+
+  return value
+})
+
 const config = convict({
   debug: {
     format: Boolean,
@@ -8,20 +18,75 @@ const config = convict({
     arg: 'debug',
     env: 'PLUGIN_DEBUG'
   },
-  server: {
+  webhook: {
+    format: 'url',
+    doc: 'Slack webhook url',
+    default: null,
+    arg: 'webhook',
+    env: 'PLUGIN_WEBHOOK'
+  },
+  usernameMap: {
+    format: Array,
+    doc: 'Map of VCS usernames to slack usernames',
+    default: [],
+    arg: 'username-map',
+    env: 'PLUGIN_USERNAME_MAP'
+  },
+  template: {
+    format: String,
+    doc: 'Slack template',
+    default: `
+{{#success build.status}}
+    Build *succeeded* for \`{{commit.branch}}\` @ \`<{{commit.link}}|{{substring commit.hash 0 8}}>\` by @{{commit.author}}
+{{else}}
+    Build *failed* for \`{{commit.branch}}\` @ \`<{{commit.link}}|{{substring commit.hash 0 8}}>\` by @{{commit.author}}
+{{/success}}
+`,
+    arg: 'template',
+    env: 'PLUGIN_TEMPLATE'
+  },
+  buildTemplate: {
+    format: String,
+    doc: 'Slack template',
+    default: 'Build time: {{duration build.started build.finished}}',
+    arg: 'build-template',
+    env: 'PLUGIN_BUILD_TIME_TEMPLATE'
+  },
+  completedTemplate: {
+    format: String,
+    doc: 'Slack template',
+    default: 'Completed at {{datetime build.finished "MMM Do, Y h:mm::ss a"}}',
+    arg: 'completed-template',
+    env: 'PLUGIN_COMPLETED_AT_TEMPLATE'
+  },
+  started: {
+    format: Boolean,
+    doc: 'Beginning Build',
+    default: false,
+    arg: 'started',
+    env: 'PLUGIN_STARTED'
+  },
+  startedTemplate: {
+    format: String,
+    doc: 'Started slack template',
+    default: 'Build *started* for <{{repo.link}}|{{repo.owner}}/{{repo.name}}> on `{{commit.branch}}` @ `<{{commit.link}}|{{substring commit.hash 0 8}}>`',
+    arg: 'started-template',
+    env: 'PLUGIN_STARTED_TEMPLATE'
+  },
+  system: {
     proto: {
       format: String,
       doc: 'Drone server protocol',
       default: 'http',
-      arg: 'server-proto',
-      env: 'DRONE_SERVER_PROTO'
+      arg: 'system-proto',
+      env: 'DRONE_SYSTEM_PROTO'
     },
     host: {
       format: String,
       doc: 'Drone server hostname',
       default: '',
-      arg: 'server-host',
-      env: 'DRONE_SERVER_HOST'
+      arg: 'system-host',
+      env: 'DRONE_SYSTEM_HOST'
     }
   },
   repo: {
@@ -40,7 +105,7 @@ const config = convict({
       env: 'DRONE_REPO_NAME'
     },
     link: {
-      format: String,
+      format: 'url',
       doc: 'Repo link',
       default: '',
       arg: 'repo-link',
@@ -84,7 +149,7 @@ const config = convict({
       env: 'DRONE_DEPLOY_TO'
     },
     link: {
-      format: String,
+      format: 'url',
       doc: 'Build link',
       default: '',
       arg: 'build-link',
@@ -135,7 +200,7 @@ const config = convict({
       env: 'DRONE_COMMIT_BRANCH'
     },
     author: {
-      format: String,
+      format: 'username',
       doc: 'Commit author',
       default: '',
       arg: 'commit-author',
@@ -156,7 +221,7 @@ const config = convict({
       env: 'DRONE_COMMIT_MESSAGE'
     },
     link: {
-      format: String,
+      format: 'url',
       doc: 'Commit link',
       default: '',
       arg: 'commit-link',
@@ -178,54 +243,6 @@ const config = convict({
       arg: 'job-step',
       env: 'DRONE_STEP_NUMBER'
     }
-  },
-  webhook: {
-    format: String,
-    doc: 'Slack webhook url',
-    default: null,
-    arg: 'webhook',
-    env: 'PLUGIN_WEBHOOK'
-  },
-  template: {
-    format: String,
-    doc: 'Slack template',
-    default: `
-{{#success build.status}}
-    Build *succeeded* for \`{{commit.branch}}\` @ \`<{{commit.link}}|{{substring commit.hash 0 8}}>\` by @{{commit.author}}
-{{else}}
-    Build *failed* for \`{{commit.branch}}\` @ \`<{{commit.link}}|{{substring commit.hash 0 8}}>\` by @{{commit.author}}
-{{/success}}
-`,
-    arg: 'template',
-    env: 'PLUGIN_TEMPLATE'
-  },
-  buildTemplate: {
-    format: String,
-    doc: 'Slack template',
-    default: 'Build time: {{duration build.started build.finished}}',
-    arg: 'build-template',
-    env: 'PLUGIN_BUILD_TIME_TEMPLATE'
-  },
-  completedTemplate: {
-    format: String,
-    doc: 'Slack template',
-    default: 'Completed at {{datetime build.finished "MMM Do, Y h:mm::ss a"}}',
-    arg: 'completed-template',
-    env: 'PLUGIN_COMPLETED_AT_TEMPLATE'
-  },
-  started: {
-    format: Boolean,
-    doc: 'Beginning Build',
-    default: false,
-    arg: 'started',
-    env: 'PLUGIN_STARTED'
-  },
-  startedTemplate: {
-    format: String,
-    doc: 'Started slack template',
-    default: 'Build *started* for <{{repo.link}}|{{repo.owner}}/{{repo.name}}> on `{{commit.branch}}` @ `<{{commit.link}}|{{substring commit.hash 0 8}}>`',
-    arg: 'started-template',
-    env: 'PLUGIN_STARTED_TEMPLATE'
   }
 })
 

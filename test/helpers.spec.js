@@ -25,7 +25,7 @@ describe('helpers test',() => {
 
         it('should use the default format', () => {
             const datetime = helpers.datetime(timestamp);
-            expect(datetime).to.include('2019-01-01T00:00:00');
+            expect(datetime).to.match(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[+-]\d{2}:\d{2}/);
         });
 
         it('should format the date with a custom format', () => {

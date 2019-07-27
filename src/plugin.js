@@ -16,17 +16,14 @@
 
 import { IncomingWebhook } from '@slack/webhook'
 import { started, completed } from './config/payload'
+import logger from './lib/logger'
 import Renderer from './lib/renderer'
 
 class Plugin {
-  constructor (logger) {
-    this.logger = logger
-  }
-
   async run (config) {
     const payload = await this.getPayload(config)
 
-    this.logger.debug(payload)
+    logger.debug(payload)
 
     return new IncomingWebhook(config.webhook).send(payload)
   }
@@ -49,7 +46,7 @@ class Plugin {
     payload.blocks[1].elements[0].style = config.build.status === 'success' ? 'primary' : 'danger'
 
     // Build History
-    payload.blocks[1].elements[1].url = await this.renderTemplate('{{server.proto}}://{{server.host}}/{{repo.owner}}/{{repo.name}}/', config)
+    payload.blocks[1].elements[1].url = await this.renderTemplate('{{system.proto}}://{{system.host}}/{{repo.owner}}/{{repo.name}}/', config)
 
     // Link to repo
     payload.blocks[2].elements[0].text = await this.renderTemplate('<{{repo.link}}|{{repo.owner}}/{{repo.name}}>', config)

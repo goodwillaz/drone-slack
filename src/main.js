@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { logger } from './lib/logger'
+import logger from './lib/logger'
 import Plugin from './plugin'
 
 let config
@@ -23,13 +23,20 @@ try {
   config = require('./config/config')
 } catch (e) {
   logger.error(e)
-  process.exit()
+  process.exit(1)
 }
 
 if (config.debug === true) {
   logger.level = 'debug'
 }
 
-logger.debug(config)
+logger.debug(config); // eslint-disable-line semi
 
-new Plugin(logger).run(config).catch(logger.error)
+(async function () {
+  try {
+    await new Plugin().run(config)
+  } catch (e) {
+    logger.error(JSON.stringify(e))
+    process.exit(1)
+  }
+})()

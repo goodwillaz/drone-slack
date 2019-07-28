@@ -77,8 +77,8 @@ Here's a full list of environment variables supported by the plugin and how they
 * PLUGIN_STARTED_TEMPLATE
 * PLUGIN_STARTED - `{{started}}`
 * PLUGIN_DEBUG- `{{debug}}`
-* DRONE_SERVER_PROTO - `{{server.proto}}`
-* DRONE_SERVER_HOST - `{{server.host}}`
+* DRONE_SYSTEM_PROTO - `{{system.proto}}`
+* DRONE_SYSTEM_HOST - `{{system.host}}`
 * DRONE_REPO_OWNER - `{{repo.owner}}`
 * DRONE_REPO_NAME - `{{repo.name}}`
 * DRONE_REPO_LINK - `{{repo.link}}`

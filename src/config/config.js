@@ -21,7 +21,7 @@ const config = convict({
   webhook: {
     format: 'url',
     doc: 'Slack webhook url',
-    default: null,
+    default: '',
     arg: 'webhook',
     env: 'PLUGIN_WEBHOOK'
   },

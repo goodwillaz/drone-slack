@@ -8,7 +8,12 @@ describe('config test',() => {
       delete require.cache[require.resolve('../src/config/config')]
       delete process.env.PLUGIN_USERNAME_MAP
       delete process.env.DRONE_COMMIT_AUTHOR
+
+      // So validation of config doesn't puke
       process.env.PLUGIN_WEBHOOK = 'foo'
+      process.env.DRONE_REPO_LINK = 'foo'
+      process.env.DRONE_BUILD_LINK = 'foo'
+      process.env.DRONE_COMMIT_LINK = 'foo'
     })
 
     it('should map a username', () => {

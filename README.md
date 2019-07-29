@@ -51,9 +51,7 @@ From the command line:
 
 ```bash
 $ docker run --rm \
-  -e SLACK_WEBHOOK=https://hooks.slack.com/services/... \
-  -e PLUGIN_CHANNEL=foo \
-  -e PLUGIN_USERNAME=drone \
+  -e PLUGIN_WEBHOOK=https://hooks.slack.com/services/... \
   -e DRONE_REPO_OWNER=octocat \
   -e DRONE_REPO_NAME=hello-world \
   -e DRONE_COMMIT_SHA=7fd1a60b01f91b314f59955a4e4d4e80d8edf11d \
@@ -63,8 +61,18 @@ $ docker run --rm \
   -e DRONE_BUILD_STATUS=success \
   -e DRONE_BUILD_LINK=http://github.com/octocat/hello-world \
   -e DRONE_TAG=1.0.0 \
-  <username>/slack
+  goodwillaz/drone-slack
 ```
+
+### Settings Support
+
+* webhook
+* template
+* build_time_template
+* completed_at_template
+* started_template
+* started
+* debug
 
 ### Environment Variable Support
 

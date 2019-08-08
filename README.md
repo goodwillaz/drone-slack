@@ -80,6 +80,7 @@ Here's a full list of environment variables supported by the plugin and how they
 
 * PLUGIN_WEBHOOK
 * PLUGIN_TEMPLATE
+* PLUGIN_USERNAME_MAP
 * PLUGIN_BUILD_TIME_TEMPLATE
 * PLUGIN_COMPLETED_AT_TEMPLATE
 * PLUGIN_STARTED_TEMPLATE

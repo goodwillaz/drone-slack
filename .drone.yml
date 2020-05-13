@@ -14,7 +14,6 @@ steps:
     image: plugins/docker
     settings:
       daemon_off: false
-      auto_tag: true
       dry_run: true
       repo: goodwillaz/drone-slack
     when:

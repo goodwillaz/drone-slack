@@ -41,7 +41,7 @@ const config = convict({
 {{#success build.status}}
     Build *succeeded* for \`{{commit.branch}}\` @ \`<{{commit.link}}|{{substring commit.hash 0 8}}>\` by @{{commit.author}}
 {{else}}
-    Build *failed* for \`{{commit.branch}}\` @ \`<{{commit.link}}|{{substring commit.hash 0 8}}>\` by @{{commit.author}}
+    Build *failed* on \`{{build.failedSteps}}\` for \`{{commit.ref}}\` @ \`<{{commit.link}}|{{substring commit.hash 0 8}}>\` by @{{commit.author}}
 {{/success}}
 `,
     arg: 'template',
@@ -177,6 +177,20 @@ const config = convict({
       default: 0,
       arg: 'build-finished',
       env: 'DRONE_BUILD_FINISHED'
+    },
+    failedStages: {
+      format: 'integer',
+      doc: 'Failed stages',
+      default: 0,
+      arg: 'failed-stages',
+      env: 'DRONE_FAILED_STAGES'
+    },
+    failedSteps: {
+      format: 'integer',
+      doc: 'Failed steps',
+      default: 0,
+      arg: 'failed-steps',
+      env: 'DRONE_FAILED_STEPS'
     }
   },
   commit: {

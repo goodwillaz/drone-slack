@@ -109,6 +109,8 @@ Here's a full list of environment variables supported by the plugin and how they
 * DRONE_COMMIT_LINK - `{{commit.link}}`
 * DRONE_JOB_STARTED - `{{job.started}}`
 * DRONE_STEP_NUMBER - `{{job.step}}`
+* DRONE_FAILED_STAGES = `{{build.failedStages}}`
+* DRONE_FAILED_STEPS = `{{build.failedSteps}}`
 
 ### License
 

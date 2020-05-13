@@ -14,29 +14,29 @@
  * limitations under the License.
  */
 
-import logger from './lib/logger'
-import Plugin from './plugin'
+import logger from './lib/logger';
+import Plugin from './plugin';
 
-let config
+let config;
 
 try {
-  config = require('./config/config')
+  config = require('./config/config');
 } catch (e) {
-  logger.error(e)
-  process.exit(1)
+  logger.error(e);
+  process.exit(1);
 }
 
 if (config.debug === true) {
-  logger.level = 'debug'
+  logger.level = 'debug';
 }
 
 logger.debug(config); // eslint-disable-line semi
 
 (async function () {
   try {
-    await new Plugin().run(config)
+    await new Plugin().run(config);
   } catch (e) {
-    logger.error(JSON.stringify(e))
-    process.exit(1)
+    logger.error(JSON.stringify(e));
+    process.exit(1);
   }
-})()
+})();

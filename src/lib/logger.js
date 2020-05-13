@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import { createLogger, format, transports } from 'winston'
-const { combine, timestamp, printf } = format
+import { createLogger, format, transports } from 'winston';
+const { combine, timestamp, printf } = format;
 
 const jsonFormat = printf(({ message, timestamp }) => {
   if (typeof message !== 'object') {
-    message = { message }
+    message = { message };
   }
-  message.time = timestamp
-  return JSON.stringify(message)
-})
+  message.time = timestamp;
+  return JSON.stringify(message);
+});
 
 const logger = createLogger({
   level: 'info',
@@ -35,6 +35,6 @@ const logger = createLogger({
     new transports.Console({ handleExceptions: true, colorize: true })
   ],
   exitOnError: true
-})
+});
 
-export default logger
+export default logger;

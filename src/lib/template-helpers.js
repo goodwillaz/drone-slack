@@ -14,41 +14,41 @@
  * limitations under the License.
  */
 
-import humanizeDuration from 'humanize-duration'
-import moment from 'moment-timezone'
+import humanizeDuration from 'humanize-duration';
+import moment from 'moment-timezone';
 
-export const duration = (started, finished) => humanizeDuration((finished - started) * 1000)
+export const duration = (started, finished) => humanizeDuration((finished - started) * 1000);
 
-export const since = start => humanizeDuration(Date.now() - (start * 1000))
+export const since = start => humanizeDuration(Date.now() - (start * 1000));
 
-export const regexReplace = (pattern, input, replace) => input.replace(new RegExp(pattern, 'g'), replace)
+export const regexReplace = (pattern, input, replace) => input.replace(new RegExp(pattern, 'g'), replace);
 
-export const substring = (input, start, end) => input.substring(start, end)
+export const substring = (input, start, end) => input.substring(start, end);
 
 export function datetime (timestamp, format, zone) {
   if (typeof zone !== 'string' || zone.length === 0) {
-    return moment.unix(timestamp).format(format)
+    return moment.unix(timestamp).format(format);
   }
 
   if (moment.tz.zone(zone)) {
-    return moment.unix(timestamp).tz(zone).format(format)
+    return moment.unix(timestamp).tz(zone).format(format);
   }
 
-  return moment.unix(timestamp).tz(moment.tz.guess()).format(format)
+  return moment.unix(timestamp).tz(moment.tz.guess()).format(format);
 }
 
 export function success (conditional, options) {
   if (conditional === undefined) {
-    return options.inverse(this)
+    return options.inverse(this);
   }
 
-  return conditional === 'success' ? options.fn(this) : options.inverse(this)
+  return conditional === 'success' ? options.fn(this) : options.inverse(this);
 }
 
 export function failure (conditional, options) {
   if (conditional === undefined) {
-    return options.inverse(this)
+    return options.inverse(this);
   }
 
-  return ['failure', 'error', 'killed'].includes(conditional) ? options.fn(this) : options.inverse(this)
+  return ['failure', 'error', 'killed'].includes(conditional) ? options.fn(this) : options.inverse(this);
 }

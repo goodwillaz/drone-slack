@@ -1,6 +1,6 @@
 export const started = {
   text: ''
-}
+};
 
 export const completed = {
   text: '',
@@ -57,4 +57,4 @@ export const completed = {
       ]
     }
   ]
-}
+};

@@ -39,7 +39,7 @@ const config = convict({
     doc: 'Slack template',
     default: `
 {{#success build.status}}
-    Build *succeeded* for \`{{commit.branch}}\` @ \`<{{commit.link}}|{{substring commit.hash 0 8}}>\` by @{{commit.author}}
+    Build *succeeded* for \`{{commit.ref}}\` @ \`<{{commit.link}}|{{substring commit.hash 0 8}}>\` by @{{commit.author}}
 {{else}}
     Build *failed* on \`{{build.failedSteps}}\` for \`{{commit.ref}}\` @ \`<{{commit.link}}|{{substring commit.hash 0 8}}>\` by @{{commit.author}}
 {{/success}}
@@ -57,7 +57,7 @@ const config = convict({
   completedTemplate: {
     format: String,
     doc: 'Slack template',
-    default: 'Completed at {{datetime build.finished "MMM Do, Y h:mm::ss a"}}',
+    default: 'Completed at {{datetime build.finished "MMM Do, Y h:mm:ss a" "America/Phoenix"}}',
     arg: 'completed-template',
     env: 'PLUGIN_COMPLETED_AT_TEMPLATE'
   },
@@ -71,7 +71,7 @@ const config = convict({
   startedTemplate: {
     format: String,
     doc: 'Started slack template',
-    default: 'Build *started* for <{{repo.link}}|{{repo.owner}}/{{repo.name}}> on `{{commit.branch}}` @ `<{{commit.link}}|{{substring commit.hash 0 8}}>`',
+    default: 'Build *started* for <{{repo.link}}|{{repo.owner}}/{{repo.name}}> on `{{commit.ref}}` @ `<{{commit.link}}|{{substring commit.hash 0 8}}>`',
     arg: 'started-template',
     env: 'PLUGIN_STARTED_TEMPLATE'
   },
@@ -179,16 +179,16 @@ const config = convict({
       env: 'DRONE_BUILD_FINISHED'
     },
     failedStages: {
-      format: 'integer',
+      format: String,
       doc: 'Failed stages',
-      default: 0,
+      default: '',
       arg: 'failed-stages',
       env: 'DRONE_FAILED_STAGES'
     },
     failedSteps: {
-      format: 'integer',
+      format: String,
       doc: 'Failed steps',
-      default: 0,
+      default: '',
       arg: 'failed-steps',
       env: 'DRONE_FAILED_STEPS'
     }

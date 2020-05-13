@@ -19,7 +19,7 @@ export const completed = {
           type: 'button',
           text: {
             type: 'plain_text',
-            text: 'Build Logs'
+            text: 'Build Log'
           },
           url: '',
           style: ''
@@ -28,7 +28,7 @@ export const completed = {
           type: 'button',
           text: {
             type: 'plain_text',
-            text: 'Build History'
+            text: 'Build Activity'
           },
           url: ''
         }

@@ -14,46 +14,46 @@
  * limitations under the License.
  */
 
-import axios from 'axios'
-import fs from 'fs'
-import Handlebars from 'handlebars'
-import handlebarsHelpers from 'handlebars-helpers'
-import { fileURLToPath } from 'url'
-import * as customHelpers from './template-helpers'
+import axios from 'axios';
+import fs from 'fs';
+import Handlebars from 'handlebars';
+import handlebarsHelpers from 'handlebars-helpers';
+import { fileURLToPath } from 'url';
+import * as customHelpers from './template-helpers';
 
 class Renderer {
   constructor (template) {
-    this.template = template
+    this.template = template;
     handlebarsHelpers([
       'array', 'collection', 'comparison', 'date', 'fs', 'inflection', 'match',
       'math', 'misc', 'number', 'object', 'path', 'regex', 'string', 'url', 'utils'
-    ])
-    Handlebars.registerHelper(customHelpers)
+    ]);
+    Handlebars.registerHelper(customHelpers);
   }
 
   async render (context = {}) {
     return this
       .getTemplate()
-      .then(template => Handlebars.compile(template)(context).trim())
+      .then(template => Handlebars.compile(template)(context).trim());
   }
 
   async getTemplate () {
     try {
-      const parsedUrl = new URL(this.template)
+      const parsedUrl = new URL(this.template);
 
       if (['http:', 'https:'].includes(parsedUrl.protocol)) {
-        return await axios.get(this.template)
+        return await axios.get(this.template);
       }
 
       if (parsedUrl.protocol === 'file:') {
-        return fs.readFileSync(fileURLToPath(parsedUrl))
+        return fs.readFileSync(fileURLToPath(parsedUrl));
       }
     } catch (e) {
       // Do nothing, we'll just return the original template below
     }
 
-    return this.template
+    return this.template;
   }
 }
 
-export default Renderer
+export default Renderer;

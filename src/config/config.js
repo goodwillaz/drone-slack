@@ -1,16 +1,16 @@
-import convict from 'convict'
-import convictFormatWithValidator from 'convict-format-with-validator'
+import convict from 'convict';
+import convictFormatWithValidator from 'convict-format-with-validator';
 
-convict.addFormats(convictFormatWithValidator)
+convict.addFormats(convictFormatWithValidator);
 convict.addFormat('username', () => {}, (value, config) => {
-  const map = config.get('usernameMap').find(element => element.indexOf(`${value}:`) === 0)
+  const map = config.get('usernameMap').find(element => element.indexOf(`${value}:`) === 0);
 
   if (map) {
-    value = map.substring(`${value}:`.length)
+    value = map.substring(`${value}:`.length);
   }
 
-  return value
-})
+  return value;
+});
 
 const config = convict({
   debug: {
@@ -260,9 +260,9 @@ const config = convict({
       env: 'DRONE_STEP_NUMBER'
     }
   }
-})
+});
 
 // Perform validation
-config.validate({ allowed: 'strict' })
+config.validate({ allowed: 'strict' });
 
-export default config.getProperties()
+export default config.getProperties();

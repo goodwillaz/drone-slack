@@ -14,55 +14,55 @@
  * limitations under the License.
  */
 
-import { IncomingWebhook } from '@slack/webhook'
-import { started, completed } from './config/payload'
-import logger from './lib/logger'
-import Renderer from './lib/renderer'
+import { IncomingWebhook } from '@slack/webhook';
+import { started, completed } from './config/payload';
+import logger from './lib/logger';
+import Renderer from './lib/renderer';
 
 class Plugin {
   async run (config) {
-    const payload = await this.getPayload(config)
+    const payload = await this.getPayload(config);
 
-    logger.debug(payload)
+    logger.debug(payload);
 
-    return new IncomingWebhook(config.webhook).send(payload)
+    return new IncomingWebhook(config.webhook).send(payload);
   }
 
   async getPayload (config) {
     if (config.started) {
-      const payload = started
-      payload.text = await this.renderTemplate(config.startedTemplate, config)
-      return payload
+      const payload = started;
+      payload.text = await this.renderTemplate(config.startedTemplate, config);
+      return payload;
     }
 
-    const payload = completed
+    const payload = completed;
 
     // First block is the main text
-    payload.text = await this.renderTemplate(config.template, config)
-    payload.blocks[0].text.text = payload.text
+    payload.text = await this.renderTemplate(config.template, config);
+    payload.blocks[0].text.text = payload.text;
 
     // Build Logs button
-    payload.blocks[1].elements[0].url = config.build.link
-    payload.blocks[1].elements[0].style = config.build.status === 'success' ? 'primary' : 'danger'
+    payload.blocks[1].elements[0].url = config.build.link;
+    payload.blocks[1].elements[0].style = config.build.status === 'success' ? 'primary' : 'danger';
 
     // Build History
-    payload.blocks[1].elements[1].url = await this.renderTemplate('{{system.proto}}://{{system.host}}/{{repo.owner}}/{{repo.name}}/', config)
+    payload.blocks[1].elements[1].url = await this.renderTemplate('{{system.proto}}://{{system.host}}/{{repo.owner}}/{{repo.name}}/', config);
 
     // Link to repo
-    payload.blocks[2].elements[0].text = await this.renderTemplate('<{{repo.link}}|{{repo.owner}}/{{repo.name}}>', config)
+    payload.blocks[2].elements[0].text = await this.renderTemplate('<{{repo.link}}|{{repo.owner}}/{{repo.name}}>', config);
 
     // Build time template
-    payload.blocks[3].elements[0].text = await this.renderTemplate(config.buildTemplate, config)
+    payload.blocks[3].elements[0].text = await this.renderTemplate(config.buildTemplate, config);
 
     // Completed at template
-    payload.blocks[3].elements[1].text = await this.renderTemplate(config.completedTemplate, config)
+    payload.blocks[3].elements[1].text = await this.renderTemplate(config.completedTemplate, config);
 
-    return payload
+    return payload;
   }
 
   async renderTemplate (template, config) {
-    return new Renderer(template).render(config)
+    return new Renderer(template).render(config);
   }
 }
 
-export default Plugin
+export default Plugin;

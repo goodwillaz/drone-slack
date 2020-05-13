@@ -1,0 +1,44 @@
+kind: pipeline
+name: deploy
+
+steps:
+  - name: test
+    image: node:12.16-alpine
+    commands:
+      - npm install
+      - npm run lint
+      - npm run test
+
+  - name: dry-run
+    pull: always
+    image: plugins/docker
+    settings:
+      daemon_off: false
+      auto_tag: true
+      dry_run: true
+      repo: goodwillaz/drone-slack
+    when:
+      event:
+        - pull_request
+
+  - name: publish
+    pull: always
+    image: plugins/docker
+    settings:
+      daemon_off: false
+      auto_tag: true
+      repo: goodwillaz/drone-slack
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+    when:
+      event:
+        exclude:
+          - pull_request
+
+trigger:
+  ref:
+    - refs/heads/develop
+    - "refs/tags/**"
+    - "refs/pull/**"

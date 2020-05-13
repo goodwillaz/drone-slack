@@ -1,4 +1,4 @@
-FROM node:10.15-alpine AS base
+FROM node:12.16-alpine AS base
 MAINTAINER Matt Zuba <matt.zuba@goodwillaz.org>
 WORKDIR /app
 COPY package*.json ./

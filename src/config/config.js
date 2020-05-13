@@ -1,5 +1,7 @@
 import convict from 'convict'
+import convictFormatWithValidator from 'convict-format-with-validator'
 
+convict.addFormats(convictFormatWithValidator)
 convict.addFormat('username', () => {}, (value, config) => {
   const map = config.get('usernameMap').find(element => element.indexOf(`${value}:`) === 0)
 

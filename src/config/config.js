@@ -39,9 +39,9 @@ const config = convict({
     doc: 'Slack template',
     default: `
 {{#success build.status}}
-    Build *succeeded* for \`{{commit.ref}}\` @ \`<{{commit.link}}|{{substring commit.hash 0 8}}>\` by @{{commit.author}}
+    Build *succeeded* for \`{{commit.ref}}\` @ \`<{{commit.link}}|{{substring commit.hash 0 8}}>\`
 {{else}}
-    Build *failed* on \`{{build.failedStages}}\` for \`{{commit.ref}}\` @ \`<{{commit.link}}|{{substring commit.hash 0 8}}>\` by @{{commit.author}}
+    Build *failed* on \`{{build.failedSteps}}\` for \`{{commit.ref}}\` @ \`<{{commit.link}}|{{substring commit.hash 0 8}}>\` by @{{commit.author}}
 {{/success}}
 `,
     arg: 'template',
@@ -50,7 +50,7 @@ const config = convict({
   buildTemplate: {
     format: String,
     doc: 'Slack template',
-    default: 'Build time: {{duration build.started build.finished}}',
+    default: 'Build time: {{duration build.created build.finished}}',
     arg: 'build-template',
     env: 'PLUGIN_BUILD_TIME_TEMPLATE'
   },
@@ -71,7 +71,7 @@ const config = convict({
   startedTemplate: {
     format: String,
     doc: 'Started slack template',
-    default: 'Build *started* for <{{repo.link}}|{{repo.owner}}/{{repo.name}}> on `{{commit.ref}}` @ `<{{commit.link}}|{{substring commit.hash 0 8}}>`',
+    default: 'Build *started* for <{{build.link}}|{{repo.owner}}/{{repo.name}}> on `{{commit.ref}}` @ `<{{commit.link}}|{{substring commit.hash 0 8}}>` by <@{{commit.author}}>',
     arg: 'started-template',
     env: 'PLUGIN_STARTED_TEMPLATE'
   },

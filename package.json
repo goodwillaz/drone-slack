@@ -14,7 +14,7 @@
   "dependencies": {
     "@slack/webhook": "^6.0.0",
     "axios": "^0.21.1",
-    "convict": "^6.0.0",
+    "convict": "^6.2.2",
     "convict-format-with-validator": "^6.0.0",
     "handlebars": "^4.7.6",
     "handlebars-helpers": "^0.10.0",

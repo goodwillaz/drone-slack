@@ -19,7 +19,7 @@
     "handlebars": "^4.7.6",
     "handlebars-helpers": "^0.10.0",
     "humanize-duration": "^3.22.0",
-    "moment-timezone": "^0.5.28",
+    "moment-timezone": "^0.5.35",
     "winston": "^3.2.1"
   },
   "devDependencies": {

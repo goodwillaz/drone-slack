@@ -41,7 +41,7 @@ const config = convict({
 {{#success build.status}}
     Build *succeeded* for \`{{commit.ref}}\` @ \`<{{commit.link}}|{{substring commit.hash 0 8}}>\`
 {{else}}
-    Build *failed* on \`{{build.failedSteps}}\` for \`{{commit.ref}}\` @ \`<{{commit.link}}|{{substring commit.hash 0 8}}>\` by @{{commit.author}}
+    Build *failed* on \`{{build.failedSteps}}\` for \`{{commit.ref}}\` @ \`<{{commit.link}}|{{substring commit.hash 0 8}}>\` by <@{{commit.author}}>
 {{/success}}
 `,
     arg: 'template',

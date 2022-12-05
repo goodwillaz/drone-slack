@@ -1,36 +1,53 @@
+---
 kind: pipeline
-name: deploy
+name: testing
+type: docker
+slack:
+  where: false
 
 steps:
   - name: test
-    image: node:12.16-alpine
+    image: node:16-alpine
     commands:
-      - npm install
+      - npm ci
       - npm run lint
       - npm run test
 
+trigger:
+  ref:
+    - refs/heads/develop
+    - "refs/tags/**"
+    - "refs/pull/**"
+
+---
+kind: pipeline
+name: deploy
+type: docker
+
+steps:
   - name: dry-run
     pull: always
     image: plugins/docker
     settings:
-      daemon_off: false
       dry_run: true
-      repo: goodwillaz/drone-slack
+      repo: ghcr.io/goodwillaz/drone-slack
+      registry: ghcr.io
+      username: goodwillaz-ci
+      password:
+        from_secret: gh_token
     when:
       event:
         - pull_request
 
   - name: publish
-    pull: always
     image: plugins/docker
     settings:
-      daemon_off: false
       auto_tag: true
-      repo: goodwillaz/drone-slack
-      username:
-        from_secret: docker_username
+      repo: ghcr.io/goodwillaz/drone-slack
+      registry: ghcr.io
+      username: goodwillaz-ci
       password:
-        from_secret: docker_password
+        from_secret: gh_token
     when:
       event:
         exclude:
@@ -41,3 +58,6 @@ trigger:
     - refs/heads/develop
     - "refs/tags/**"
     - "refs/pull/**"
+
+depends_on:
+  - testing
